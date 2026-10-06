@@ -1,17 +1,289 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TacitVLA</title>
-<style>
-  html, body { height: 100%; margin: 0; }
-  body { display: flex; align-items: center; justify-content: center; background: #ffffff; color: #222222;
-         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
-  h1 { font-size: 2.5rem; font-weight: 600; letter-spacing: 0.01em; }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TacitVLA: Reasoning Vision-Language-Action Models Without Reasoning Latency</title>
+  <meta name="description" content="TacitVLA is a reasoning VLA whose action expert never attends to the reasoning it generates for the current call, so it matches its explicit-reasoning counterpart's performance at up to 3.4× lower latency.">
+  <meta name="keywords" content="TacitVLA, vision-language-action models, reasoning VLA, embodied chain-of-thought, latency, robot manipulation, autonomous driving, memory, RoboMME, RMBench, LIBERO, PhysicalAI-AV">
+  <link rel="canonical" href="https://tacitvla.github.io/">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <meta property="og:title" content="TacitVLA: Reasoning Vision-Language-Action Models Without Reasoning Latency">
+  <meta property="og:description" content="TacitVLA is a reasoning VLA whose action expert never attends to the reasoning it generates for the current call, so it matches its explicit-reasoning counterpart's performance at up to 3.4× lower latency.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tacitvla.github.io/">
+  <meta property="og:image" content="https://tacitvla.github.io/static/images/preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The TacitVLA title above the paper's Figure 1: how Explicit Reasoning and TacitVLA act in one call, and success against latency on RoboMME Counting and LIBERO-Plus.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="TacitVLA: Reasoning Vision-Language-Action Models Without Reasoning Latency">
+  <meta name="twitter:description" content="TacitVLA is a reasoning VLA whose action expert never attends to the reasoning it generates for the current call, so it matches its explicit-reasoning counterpart's performance at up to 3.4× lower latency.">
+  <meta name="twitter:image" content="https://tacitvla.github.io/static/images/preview.png">
+  <meta name="twitter:image:alt" content="The TacitVLA title above the paper's Figure 1: how Explicit Reasoning and TacitVLA act in one call, and success against latency on RoboMME Counting and LIBERO-Plus.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans&display=swap" rel="stylesheet"></noscript>
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
 </head>
 <body>
-<h1>Coming soon!</h1>
+
+<header class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <p class="kicker">Embodied Reasoning · Vision-Language-Action Models · Manipulation and Driving</p>
+          <h1 class="title is-1 publication-title"><span class="brand">TacitVLA</span>: Reasoning <span class="nowrap">Vision-Language-Action</span> <br>Models Without Reasoning Latency</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><a href="https://jacklu-me.com" target="_blank" rel="noopener">Jack Lu</a><sup>1,2,†</sup>,</span>
+            <span class="author-block"><a href="https://www.yurongyou.com/" target="_blank" rel="noopener">Yurong You</a><sup>1</sup>,</span>
+            <span class="author-block"><a href="https://sites.google.com/site/boyilics/home" target="_blank" rel="noopener">Boyi Li</a><sup>1,3</sup>,</span>
+            <span class="author-block"><a href="https://kikacaty.github.io/" target="_blank" rel="noopener">Yulong Cao</a><sup>1</sup>,</span>
+            <span class="author-block"><a href="https://thomasrantian.github.io/" target="_blank" rel="noopener">Thomas Tian</a><sup>1</sup>,</span>
+            <span class="author-block"><a href="https://xiaocw11.github.io/" target="_blank" rel="noopener">Chaowei Xiao</a><sup>4,1</sup>,</span>
+            <span class="author-block"><a href="https://www.cs.cornell.edu/~xchen/" target="_blank" rel="noopener">Xiangyu Chen</a><sup>1</sup>,</span>
+            <span class="author-block"><a href="https://www.cs.toronto.edu/~wenjie/" target="_blank" rel="noopener">Wenjie Luo</a><sup>1</sup>,</span>
+            <span class="author-block"><a href="https://www.borisivanovic.com/" target="_blank" rel="noopener">Boris Ivanovic</a><sup>1</sup>,</span>
+            <span class="author-block"><a href="https://web.stanford.edu/~pavone/" target="_blank" rel="noopener">Marco Pavone</a><sup>1,5</sup>,</span>
+            <span class="author-block"><a href="https://www.yanwang.org/" target="_blank" rel="noopener">Yan Wang</a><sup>1</sup></span>
+          </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>NVIDIA</span>
+            <span class="author-block affil-gap"><sup>2</sup>New York University</span>
+            <span class="author-block affil-gap"><sup>3</sup>University of California, Berkeley</span>
+            <span class="author-block affil-gap"><sup>4</sup>Johns Hopkins University</span>
+            <span class="author-block affil-gap"><sup>5</sup>Stanford University</span>
+          </div>
+          <div class="publication-note-line"><sup>†</sup>Work done during an internship at NVIDIA</div>
+
+          <nav class="publication-links" aria-label="Paper links">
+            <span class="button is-normal is-rounded is-dark is-static-soon" aria-disabled="true" title="arXiv coming soon">
+              <span class="icon"><svg class="svg-icon" viewBox="0 0 448 512" aria-hidden="true" focusable="false"><path fill="currentColor" transform="matrix(1.5499998,0,0,-1.5499998,-123.19936,553.59966)" d="m 119.65,351.996 c -5.84961,0.13477 -11.1943,-3.29883 -13.502,-8.67578 -2.19629,-5.27051 -0.61914,-8.9668 4.19727,-15.8652 7.05469,-10.3799 78.8242,-96.5625 78.8242,-96.5625 l -15.8828,-14.8633 c -13.3809,-13.3779 -13.9561,-31.333 -1.50977,-43.7754 l 18.4922,-17.6133 -51.5977,-63.377 c -4.00586,-4.26758 -6.48535,-11.7559 -4.24805,-17.1309 2.27832,-5.53613 7.69727,-9.12891 13.6836,-9.07031 3.83398,0.0957 7.43262,1.87402 9.83789,4.86133 l 61.3691,57.0566 94.5762,-90.0703 c 3.19434,-3.08398 7.44336,-4.83984 11.8828,-4.91016 1.60449,0.0039 3.19824,0.245117 4.73242,0.714844 5.7793,1.80566 10.249,6.41797 11.8711,12.252 1.2998,5.47363 -0.27637,11.2334 -4.18164,15.2832 l -83.0859,100.011996 14.8789,13.834 c 11.0957,10.0029 11.1543,27.3906 0.12695,37.4688 l -16.2949,15.6309 56.2559,66.4434 0.0742,0.0859 0.0664,0.0899 c 5.02734,6.53125 7.43164,11.5615 4.83984,17.9395 -3.13379,5.96875 -8.69727,10.29 -15.2559,11.8516 -0.67676,0.0908 -1.35938,0.13574 -2.04297,0.13671 l -0.004,-0.0117 c -4.42871,-0.27051 -8.61035,-2.13086 -11.7754,-5.24023 l -0.13086,-0.10743 -0.12304,-0.11132 -65.207,-59.127 -89.8965,86.2402 c 0,0 -5.33398,6.47754 -10.9707,6.61133 z m 178.104,-33.041 c 0.47852,-0.002 0.95703,-0.0332 1.43164,-0.0957 4.84277,-1.33301 8.95605,-4.54004 11.4316,-8.91016 1.44922,-3.5625 1.00293,-6.45703 -4.19727,-13.2148 l -56.0586,-66.2188 -26.375,25.3027 64.9551,58.9062 c 2.33887,2.41504 5.46484,3.91113 8.8125,4.2168 v 0.0137 z M 192.436,227.402 334.446,57.244 c 2.78711,-3.48926 4.5293,-6.97949 3.3418,-10.9121 -1.16113,-4.30273 -4.43457,-7.71777 -8.68555,-9.05664 -1.08105,-0.333984 -2.20508,-0.503906 -3.33594,-0.505859 -3.20801,0.07617 -6.26953,1.35645 -8.57617,3.58789 l -142.033,135.284999 c -11.1719,11.1719 -9.48242,26.0195 1.39258,36.8945 z"/></svg></span><span>arXiv<span class="soon">soon</span></span></span>
+            <span class="button is-normal is-rounded is-dark is-static-soon" aria-disabled="true" title="PDF coming soon">
+              <span class="icon"><svg class="svg-icon" viewBox="0 0 384 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M369.9 97.9L286 14C277 5 264.8-.1 252.1-.1H48C21.5 0 0 21.5 0 48v416c0 26.5 21.5 48 48 48h288c26.5 0 48-21.5 48-48V131.9c0-12.7-5.1-25-14.1-34zM332.1 128H256V51.9l76.1 76.1zM48 464V48h160v104c0 13.3 10.7 24 24 24h104v288H48zm250.2-143.7c-12.2-12-47-8.7-64.4-6.5-17.2-10.5-28.7-25-36.8-46.3 3.9-16.1 10.1-40.6 5.4-56-4.2-26.2-37.8-23.6-42.6-5.9-4.4 16.1-.4 38.5 7 67.1-10 23.9-24.9 56-35.4 74.4-20 10.3-47 26.2-51 46.2-3.3 15.8 26 55.2 76.1-31.2 22.4-7.4 46.8-16.5 68.4-20.1 18.9 10.2 41 17 55.8 17 25.5 0 28-28.2 17.5-38.7zm-198.1 77.8c5.1-13.7 24.5-29.5 30.4-35-19 30.3-30.4 35.7-30.4 35zm81.6-190.6c7.4 0 6.7 32.1 1.8 40.8-4.4-13.9-4.3-40.8-1.8-40.8zm-24.4 136.6c9.7-16.9 18-37 24.7-54.7 8.3 15.1 18.9 27.2 30.1 35.5-20.8 4.3-38.9 13.1-54.8 19.2zm131.6-5s-5 6-37.3-7.8c35.1-2.6 40.9 5.4 37.3 7.8z"/></svg></span><span>PDF<span class="soon">soon</span></span></span>
+            <span class="button is-normal is-rounded is-dark is-static-soon" aria-disabled="true" title="Code coming soon">
+              <span class="icon"><svg class="svg-icon" viewBox="0 0 496 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span><span>Code</span><span class="soon">soon</span></span>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- Teaser -->
+<section class="hero teaser" id="teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <p class="hook">Must the action condition on the current reasoning, or is learning to generate it enough?</p>
+      <figure class="figure">
+        <a href="static/images/concept.webp" target="_blank" title="Open the figure at full size"><img src="static/images/concept.webp" width="1400" height="773" class="teaser-img" fetchpriority="high"
+             alt="One call of a reasoning VLA. The context holds the instruction, the camera views, and on memory tasks a ledger of past subtasks. A vision-language backbone generates the reasoning text and feeds a flow-matching action expert that outputs the action. Under Explicit Reasoning the action expert attends to the reasoning text. Under TacitVLA the reasoning text is masked from the action expert. On memory tasks the text is added to the ledger for the next call."></a>
+        <p class="scroll-hint">Tap to enlarge</p>
+      </figure>
+      <p class="tldr"><span class="tv">TacitVLA</span> learns to generate reasoning text but <strong>masks it from its action expert</strong>, so its actions do not wait for the text. It delivers <strong>Explicit Reasoning's success at No Reasoning's latency</strong>.</p>
+      <div class="stats" role="list">
+        <div class="stat" role="listitem"><span class="stat-pre">up to</span><span class="stat-num">3.4×</span><span class="stat-label">lower latency than Explicit Reasoning, at matched success</span></div>
+        <div class="stat" role="listitem"><span class="stat-pre">up to</span><span class="stat-num">+17.1%</span><span class="stat-label">success over No Reasoning, at the same latency</span></div>
+        <div class="stat" role="listitem"><span class="stat-pre">RoboMME Counting</span><span class="stat-num">82.7%</span><span class="stat-label">vs. 66.8%, the best previously published</span></div>
+        <div class="stat" role="listitem"><span class="stat-pre">RMBench</span><span class="stat-num">77.5%</span><span class="stat-label">vs. 56.5%, the best previously published</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Abstract -->
+<section class="section hero is-light" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content abstract-text">
+          <p>Textual reasoning before acting has improved <span class="nowrap">vision-language-action</span> (VLA) models, but at the cost of latency: every action conditioned on the reasoning text must wait for autoregressive decoding. We show that <strong>actions do not need to wait for or condition on the generated reasoning to benefit from it</strong>, because the reasoning supervision already improves the backbone representation. We introduce <span class="tv">TacitVLA</span>, a reasoning VLA whose action expert never attends to the reasoning it generates for the current call. On <span class="nowrap">long-horizon</span> tasks where the reasoning text also serves as episodic memory, it can generate each entry during action execution rather than before acting. We evaluate it in a controlled study on four benchmarks spanning manipulation and autonomous driving, memory and <span class="nowrap">non-memory</span> tasks: RoboMME, RMBench, LIBERO, and <span class="nowrap">PhysicalAI-AV</span>. On all four, <span class="tv">TacitVLA</span> matches the performance of its <span class="nowrap">explicit-reasoning</span> counterpart at up to 3.4× lower latency, and matches the latency of the same architecture trained without reasoning at up to +17.1% success. In absolute terms, it surpasses the best previously published results on the RoboMME Counting suite (<strong>82.7% vs. 66.8%</strong>) and RMBench (<strong>77.5% vs. 56.5%</strong>), and reaches 72.9% on <span class="nowrap">LIBERO-Plus</span> and a 52.5% scene score on the public split of the <span class="nowrap">PhysicalAI-AV</span> <span class="nowrap">closed-loop</span> driving challenge.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Method -->
+<section class="hero" id="method">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <p class="kicker">Method</p>
+      <h2 class="title is-3">Masking the Reasoning from the Action Expert</h2>
+      <p>A reasoning VLA pairs a <span class="nowrap">vision-language</span> backbone, which generates the reasoning text, with a <a href="https://arxiv.org/abs/2410.24164" target="_blank" rel="noopener"><span class="nowrap">flow-matching</span></a> action expert that outputs the action chunk. Explicit Reasoning deploys it as <a href="https://arxiv.org/abs/2407.08693" target="_blank" rel="noopener">embodied <span class="nowrap">chain-of-thought</span></a> does: the action expert attends to the reasoning generated for the current call, so every action chunk waits for autoregressive decoding.</p>
+      <p><span class="tv">TacitVLA</span> is trained on the same sequence with the same loss, prompts, data, and optimizer, and differs only in <strong>masking the action expert's attention to the reasoning tokens</strong>. The reasoning supervision still trains the backbone whose representation the action expert conditions on. No Reasoning is the same architecture trained without reasoning supervision, so it matches <span class="tv">TacitVLA</span>'s latency and measures the benefit of that supervision.</p>
+      <p>At deployment, <span class="tv">TacitVLA</span> generates no text on <span class="nowrap">non-memory</span> tasks, where nothing consumes it. On memory tasks, each generated subtask becomes the next entry of a ledger that every later call conditions on. There <span class="tv">TacitVLA</span> computes the action first and generates the entry while the robot executes the action chunk.</p>
+      <figure class="figure">
+        <div class="scroll-x"><a href="static/images/method.svg" target="_blank" title="Open the figure at full size"><img class="wide-img" src="static/images/method.svg" width="1188" height="530" loading="lazy"
+             alt="(a) The training sequence: the vision-language backbone predicts the reasoning text and the tokenized actions under cross-entropy, and the action expert denoises the action chunk under flow matching. (b) The attention mask: the action chunk attends to the reasoning text only under Explicit Reasoning. (c) Deployment: on non-memory tasks Explicit Reasoning decodes the reasoning before denoising and executing actions while TacitVLA skips it, and on memory tasks TacitVLA decodes the ledger entry during execution."></a></div>
+        <p class="scroll-hint">Swipe sideways to see the whole figure</p>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- Frontier -->
+<section class="hero" id="frontier">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <p class="kicker">Results</p>
+      <h2 class="title is-3">Explicit Reasoning's Success at No Reasoning's Latency</h2>
+      <p>On the RoboMME Counting tasks and <span class="nowrap">LIBERO-Plus</span>, <span class="tv">TacitVLA</span> matches Explicit Reasoning's success at 1.7× and 3.4× lower latency, and matches No Reasoning's latency at +3.5% and +5.3% success.</p>
+      <div class="legend" aria-label="Legend">
+        <span><svg class="mk" viewBox="0 0 10 10" aria-hidden="true"><circle cx="5" cy="5" r="5" fill="#8C8C8C"/></svg>No Reasoning</span>
+        <span><svg class="mk" viewBox="0 0 10 10" aria-hidden="true"><circle cx="5" cy="5" r="5" fill="#2F5FA8"/></svg>Explicit Reasoning</span>
+        <span><svg class="mk" viewBox="0 0 10 10" aria-hidden="true"><circle cx="5" cy="5" r="5" fill="#76B900"/></svg><b><span class="tv">TacitVLA</span> (ours)</b></span>
+      </div>
+      <figure class="figure">
+        <div class="frontier-row">
+          <div class="frontier-panel">
+            <img src="static/images/frontier-robomme.svg" width="384" height="196" loading="lazy"
+                 alt="RoboMME Counting tasks, success against latency per call: TacitVLA 82.7 percent at 127 ms, Explicit Reasoning 81.5 percent at 220 ms, No Reasoning 79.2 percent at 127 ms.">
+            <img src="static/images/frontier-xlabel.svg" width="384" height="29" loading="lazy" alt="x axis: latency per call (ms)">
+          </div>
+          <div class="frontier-panel">
+            <img src="static/images/frontier-libero-plus.svg" width="384" height="196" loading="lazy"
+                 alt="LIBERO-Plus, success against latency per call: TacitVLA 72.9 percent at 147 ms, Explicit Reasoning 73.5 percent at 497 ms, No Reasoning 67.6 percent at 147 ms.">
+            <img src="static/images/frontier-xlabel.svg" width="384" height="29" loading="lazy" alt="x axis: latency per call (ms)">
+          </div>
+        </div>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- Latency -->
+<section class="hero" id="latency">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <p class="kicker">Latency</p>
+      <h2 class="title is-3">No Reasoning's Latency on Every Benchmark</h2>
+      <p>Explicit Reasoning's action waits for the reasoning text, so its latency per call is the action path plus text generation. <span class="tv">TacitVLA</span>'s latency is <strong>the action path alone, the same as No Reasoning's</strong>. On the memory tasks, it generates the ledger entry during execution, and that generation finished within the execution window in every call, taking <strong>at most 12%</strong> of it.</p>
+      <p>On the RoboMME counting tasks, <span class="tv">TacitVLA</span>'s action is ready after 127&nbsp;ms and Explicit Reasoning's after 220&nbsp;ms. On RMBench, the two take 169 to 171&nbsp;ms and 236 to 294&nbsp;ms. On LIBERO, <span class="tv">TacitVLA</span> takes 147&nbsp;ms per call and Explicit Reasoning 495&nbsp;ms, 3.4× later, so <span class="tv">TacitVLA</span> meets LIBERO's 250&nbsp;ms execution window and Explicit Reasoning does not. In <span class="nowrap">closed-loop</span> driving, they take 127&nbsp;ms and 269&nbsp;ms. All values are means over model calls on one H100.</p>
+      <figure class="figure">
+        <div class="scroll-x"><a href="static/images/latency.svg" target="_blank" title="Open the figure at full size"><img class="wide-img" src="static/images/latency.svg" width="1188" height="389" loading="lazy"
+             alt="Latency per call in milliseconds for No Reasoning, Explicit Reasoning, and TacitVLA on RoboMME Counting, four RMBench tasks, LIBERO Standard and Plus, and AlpaSim driving. TacitVLA's bars match No Reasoning's on every benchmark. Explicit Reasoning's bars are 1.4 to 3.4 times taller because they add text generation."></a></div>
+        <p class="scroll-hint">Swipe sideways to see the whole figure</p>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- Performance -->
+<section class="hero" id="performance">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <p class="kicker">Benchmarks</p>
+      <h2 class="title is-3">Matches Explicit Reasoning on All Four Benchmarks</h2>
+      <p>On each benchmark, the three policies share one architecture and are trained on the same data. <a href="https://arxiv.org/abs/2603.04639" target="_blank" rel="noopener">RoboMME</a> and <a href="https://arxiv.org/abs/2603.01229" target="_blank" rel="noopener">RMBench</a> are memory tasks, where each generated subtask becomes the next entry of a ledger of past subtasks. <a href="https://arxiv.org/abs/2306.03310" target="_blank" rel="noopener">LIBERO</a> (with <a href="https://arxiv.org/abs/2510.13626" target="_blank" rel="noopener"><span class="nowrap">LIBERO-Plus</span></a>) and <a href="https://huggingface.co/datasets/nvidia/PhysicalAI-Autonomous-Vehicles" target="_blank" rel="noopener"><span class="nowrap">PhysicalAI-AV</span></a> are <span class="nowrap">non-memory</span> tasks, where it serves the current action only.</p>
+      <div class="table-wrap">
+        <table class="results">
+          <thead>
+            <tr><th scope="col">Benchmark</th><th scope="col" class="none">No Reasoning</th><th scope="col" class="explicit">Explicit Reasoning</th><th scope="col" class="ours">TacitVLA</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">RoboMME, Counting tasks<span class="metric">success (%)</span></th><td>79.2</td><td>81.5</td><td class="ours">82.7</td></tr>
+            <tr><th scope="row">RoboMME, all 16 tasks<span class="metric">success (%)</span></th><td>46.5</td><td>45.8</td><td class="ours">48.1</td></tr>
+            <tr><th scope="row">RMBench, four tasks<span class="metric">success (%)</span></th><td>60.4</td><td>77.0</td><td class="ours">77.5</td></tr>
+            <tr><th scope="row">LIBERO, four suites<span class="metric">success (%)</span></th><td>98.5</td><td>98.1</td><td class="ours">98.6</td></tr>
+            <tr><th scope="row"><span class="nowrap">LIBERO-Plus</span><span class="metric">success (%)</span></th><td>67.6</td><td>73.5</td><td class="ours">72.9</td></tr>
+            <tr><th scope="row"><span class="nowrap">PhysicalAI-AV</span>, open loop<span class="metric">minADE (m), lower is better</span></th><td>1.166</td><td>1.140</td><td class="ours">1.116</td></tr>
+            <tr><th scope="row"><span class="nowrap">PhysicalAI-AV</span>, closed loop<span class="metric">scene score (%)</span></th><td>46.4</td><td>52.3</td><td class="ours">52.5</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="table-note">Success values are means over three evaluation seeds, and <span class="nowrap">closed-loop</span> driving values are means over three rollouts per scene. Both RoboMME rows are policies trained on all 16 tasks.</p>
+      <p>In absolute terms, <span class="tv">TacitVLA</span> surpasses the best previously published results on the RoboMME Counting suite (<strong>82.7% vs. 66.8%</strong>) and RMBench (<strong>77.5% vs. 56.5%</strong>), and reaches 72.9% on <span class="nowrap">LIBERO-Plus</span> and a 52.5% scene score on the public split of the <a href="https://huggingface.co/spaces/nvidia/AlpasimE2EClosedLoopChallenge2026" target="_blank" rel="noopener"><span class="nowrap">PhysicalAI-AV</span> <span class="nowrap">closed-loop</span> driving challenge</a>.</p>
+      <p>On RMBench Press Button, whose count exists only in the ledger, <span class="tv">TacitVLA</span> scores <strong>74.3% against 7.7%</strong> for No Reasoning, and its ledger is correct in <strong>99.7%</strong> of episodes. Trained on the RoboMME Counting suite alone, <span class="tv">TacitVLA</span> reaches 89.5%. That is above the benchmark's human reference of 88.5%, in which people chose each <span class="nowrap">high-level</span> action and an oracle planner executed it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Rollouts -->
+<section class="hero" id="rollouts">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <p class="kicker">Rollouts</p>
+      <h2 class="title is-3">Episodes with the Text <span class="tv">TacitVLA</span> Generates</h2>
+      <p>One successful <span class="tv">TacitVLA</span> episode per benchmark, from the paper's appendix. Each frame is stamped with the call index and the simulator step, and the box under it holds the text the backbone generated at that call, verbatim. On the memory tasks, the text is the ledger entry, generated during execution of the action chunk. On LIBERO and driving, where <span class="tv">TacitVLA</span> generates no text at deployment, the text was generated after computing each action, so the actions are unchanged.</p>
+      <p class="scroll-hint">Swipe each episode sideways to see all of its calls</p>
+      <div class="rollout">
+        <p class="rollout-task"><b>RoboMME BinFill</b>, front camera, at the calls that add a ledger entry and the last call. Instruction: “put three red cubes and one green cube into the bin, then press the button to stop”</p>
+        <div class="scroll-x"><img class="rollout-img" src="static/images/rollout-robomme.webp" width="1800" height="444" loading="lazy"
+             alt="Six frames of a successful RoboMME BinFill episode, calls 0, 9, 14, 37, 48, and 52. Ledger entries: pick up the first red cube; put it into the bin; pick up the second red cube; pick up the first green cube; press the button; press the button."></div>
+      </div>
+      <div class="rollout">
+        <p class="rollout-task"><b>RMBench Press Button</b>, head camera, at the calls that add a ledger entry and the last call. Instruction: “Observe the two numbers on the table. Press the left button the number of times corresponding to the number on the left, and press the middle button the number of times corresponding to the number on the right. Then press the right button once to confirm.”</p>
+        <div class="scroll-x"><img class="rollout-img" src="static/images/rollout-rmbench.webp" width="1800" height="498" loading="lazy"
+             alt="Five frames of a successful RMBench Press Button episode with the numbers 1 and 3, calls 0, 3, 5, 6, and 9. Ledger entries: press the left button for the first time; press the middle button for the first, second, and third time; press the confirm button."></div>
+      </div>
+      <div class="rollout">
+        <p class="rollout-task"><b>LIBERO</b>, agent camera, with the opening of the reasoning generated at each call. Instruction: “pick up the alphabet soup and place it in the basket”</p>
+        <div class="scroll-x"><img class="rollout-img" src="static/images/rollout-libero.webp" width="1800" height="525" loading="lazy"
+             alt="Six frames of a successful LIBERO episode, calls 0 to 27, as the robot grasps the alphabet soup and places it in the basket, each with the opening of the scene description and plan generated at that call."></div>
+      </div>
+      <div class="rollout">
+        <p class="rollout-task"><b><span class="nowrap">LIBERO-Plus</span>, Camera Viewpoints</b>, agent camera under a perturbed viewpoint. Instruction: “pick up the black bowl on the cookie box and place it on the plate”</p>
+        <div class="scroll-x"><img class="rollout-img" src="static/images/rollout-libero-plus.webp" width="1800" height="524" loading="lazy"
+             alt="Six frames of a successful LIBERO-Plus episode under a perturbed camera viewpoint, calls 0 to 22, as the robot moves the black bowl from the cookie box to the plate, each with the opening of the reasoning generated at that call."></div>
+      </div>
+      <div class="rollout">
+        <p class="rollout-task"><b><span class="nowrap">PhysicalAI-AV</span> closed loop</b> in <a href="https://github.com/NVlabs/alpasim" target="_blank" rel="noopener">AlpaSim</a>, front camera, with the chain of causation generated at each call. Instruction: “output the <span class="nowrap">chain-of-thought</span> reasoning of the driving process, then output the future trajectory”</p>
+        <div class="scroll-x"><img class="rollout-img" src="static/images/rollout-driving.webp" width="1800" height="392" loading="lazy"
+             alt="Five front-camera frames of a successful closed-loop driving scene, calls 15 to 198. Chains of causation: lane change to the left to pass the slower truck ahead; keep distance to the lead vehicle; lane change to the right due to a slower truck ahead in the ego lane."></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BibTeX -->
+<section class="hero" id="bibtex">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <div class="bibtex-head">
+        <h2 class="title is-3">BibTeX</h2>
+        <button class="button is-normal is-rounded is-dark copy-button" type="button" id="copy-bibtex">Copy</button>
+      </div>
+      <pre class="bibtex"><code id="bibtex-code"><span class="bl">@misc{lu2026tacitvla,</span><span class="bl">  title={TacitVLA: Reasoning Vision-Language-Action Models Without Reasoning Latency},</span><span class="bl">  author={Jack Lu and Yurong You and Boyi Li and Yulong Cao and Thomas Tian and Chaowei Xiao and Xiangyu Chen and Wenjie Luo and Boris Ivanovic and Marco Pavone and Yan Wang},</span><span class="bl">  year={2026}</span><span class="bl">}</span></code></pre>
+      <textarea id="bibtex-raw" hidden aria-hidden="true">@misc{lu2026tacitvla,
+  title={TacitVLA: Reasoning Vision-Language-Action Models Without Reasoning Latency},
+  author={Jack Lu and Yurong You and Boyi Li and Yulong Cao and Thomas Tian and Chaowei Xiao and Xiangyu Chen and Wenjie Luo and Boris Ivanovic and Marco Pavone and Yan Wang},
+  year={2026}
+}</textarea>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content has-text-centered">
+          <p>Adapted from the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank" rel="noopener">Academic Project Page Template</a> and <a href="https://nerfies.github.io" target="_blank" rel="noopener">Nerfies</a>, licensed under <a rel="license noopener" href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('copy-bibtex').addEventListener('click', function () {
+    var button = this;
+    navigator.clipboard.writeText(document.getElementById('bibtex-raw').value).then(function () {
+      button.textContent = 'Copied';
+      setTimeout(function () { button.textContent = 'Copy'; }, 1500);
+    });
+  });
+</script>
 </body>
 </html>

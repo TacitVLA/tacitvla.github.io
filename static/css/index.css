@@ -1,0 +1,574 @@
+/* TacitVLA project page. Base: the Academic Project Page Template styles Jack's past pages use (Google Sans for the
+   title and authors, Noto Sans for text); additions for figures, the legend, the results table, and the rollouts. */
+body {
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 1rem;
+  color: #363636;
+}
+
+.publication-title,
+.publication-authors,
+.publication-note-line,
+.hook {
+  font-family: 'Google Sans', sans-serif;
+}
+
+.publication-title {
+  text-wrap: balance;
+  font-size: 2.6rem !important;
+}
+
+.publication-authors {
+  text-wrap: balance;
+}
+
+.publication-authors a {
+  color: hsl(204, 86%, 40%) !important;
+}
+
+.publication-authors a:hover {
+  text-decoration: underline;
+}
+
+.publication-authors sup {
+  font-size: 0.7em;
+}
+
+.author-block {
+  display: inline-block;
+}
+
+.affil-gap {
+  margin-left: 0.75rem;
+}
+
+.publication-note-line {
+  font-size: 1rem;
+  color: #4a4a4a;
+  margin-top: 0.25rem;
+}
+
+.publication-links {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.publication-links .button {
+  min-height: 44px;
+}
+
+.svg-icon {
+  width: 1em;
+  height: 1em;
+}
+
+.is-static-soon {
+  opacity: 0.75;
+  cursor: default;
+}
+
+.soon {
+  font-size: 0.7em;
+  margin-left: 0.4em;
+  padding: 0.05em 0.45em;
+  border: 1px solid currentColor;
+  border-radius: 1em;
+}
+
+/* Sections */
+.hero-body {
+  padding-top: 2.5rem;
+  padding-bottom: 0;
+  min-width: 0;
+}
+
+header .hero-body {
+  padding-bottom: 0.5rem;
+}
+
+.teaser .hero-body {
+  padding-top: 0;
+  padding-bottom: 2rem;
+}
+
+.hook {
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-align: center;
+  text-wrap: balance;
+  color: #222;
+  margin-top: 1.75rem;
+  margin-bottom: 0 !important;
+}
+
+.teaser .figure {
+  margin-top: 1.5rem;
+}
+
+.teaser-img {
+  width: 640px;
+}
+
+.tldr {
+  max-width: 640px;
+  margin: 1.25rem auto 0;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  text-align: left;
+}
+
+h2.title.is-3 {
+  margin-bottom: 1rem;
+}
+
+.figure {
+  margin: 1.5rem auto 0;
+  text-align: center;
+}
+
+.figure img {
+  max-width: 100%;
+  height: auto;
+}
+
+.wide-img {
+  width: 900px;
+}
+
+/* The two scatter panels side by side in one card; they stack on narrow screens. */
+.figure > .frontier-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem 3rem;
+  background: #ffffff;
+  border: 1px solid #e6eadf;
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 6px 20px rgba(16, 24, 40, 0.06);
+  padding: 24px 18px;
+}
+
+.frontier-panel {
+  width: 400px;
+  max-width: 100%;
+}
+
+.frontier-panel img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+#abstract .container {
+  padding: 0 1.5rem;
+}
+
+#abstract .columns {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+#abstract .column {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Left-aligned (the column is centered), justified only where lines are long enough to avoid wide word gaps. */
+.abstract-text p {
+  text-align: left;
+}
+
+@media screen and (min-width: 1024px) {
+  .abstract-text p {
+    text-align: justify;
+    hyphens: auto;
+  }
+}
+
+/* Bulma zeroes paragraph margins outside .content; consecutive section paragraphs need a gap. */
+.hero-body > p + p {
+  margin-top: 0.8rem;
+}
+
+/* Shared legend for the two scatter panels, in the figure's own colors. */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem 1.25rem;
+  margin-top: 1.25rem;
+  font-size: 0.95rem;
+}
+
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.mk {
+  height: 0.8em;
+  width: 0.8em;
+}
+
+/* Results table: TacitVLA's column carries the paper's shading for its own rows. */
+.table-wrap {
+  overflow-x: auto;
+  margin-top: 1.5rem;
+}
+
+.results {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.results th,
+.results td {
+  padding: 0.45rem 0.6rem;
+  border-bottom: 1px solid #e5e5e5;
+  vertical-align: middle;
+}
+
+/* Bulma sets th:not([align]) and td:not([align]) to inherit, so these selectors match its specificity. */
+.results th:not([align]),
+.results td:not([align]) {
+  text-align: center;
+}
+
+.results th[scope="row"]:not([align]),
+.results thead th:first-child:not([align]) {
+  text-align: left;
+}
+
+.results thead th {
+  border-bottom: 2px solid #4a4a4a;
+  font-weight: 600;
+}
+
+.results .metric {
+  display: block;
+  font-size: 0.85em;
+  color: #6b6b6b;
+}
+
+.results .ours {
+  background: #eef6e0;
+  font-weight: 600;
+}
+
+.results th.ours {
+  color: #76b900;
+}
+
+.results th.explicit {
+  color: #2F5FA8;
+}
+
+.results th.none {
+  color: #6b6b6b;
+}
+
+.table-note {
+  font-size: 0.9rem;
+  color: #6b6b6b;
+  margin-top: 0.5rem;
+}
+
+/* Rollouts: one strip per benchmark with its task above. */
+.rollout {
+  margin-top: 1.75rem;
+}
+
+.rollout-task {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.rollout-task b {
+  font-family: 'Google Sans', sans-serif;
+}
+
+.rollout img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.scroll-hint {
+  display: none;
+  font-size: 0.85rem;
+  color: #6b6b6b;
+  margin-top: 0.35rem;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+/* BibTeX */
+.bibtex-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.bibtex-head .title {
+  margin-bottom: 0 !important;
+}
+
+.copy-button {
+  min-height: 44px;
+}
+
+#bibtex pre {
+  margin-top: 1rem;
+  white-space: pre-wrap;
+  max-width: 100%;
+}
+
+#bibtex .bl {
+  display: block;
+  padding-left: 4ch;
+  text-indent: -4ch;
+}
+
+/* In Bulma's flex-column .hero, a container with auto side margins shrinks to its content's widest line (the BibTeX),
+   so pin it to the column width. */
+.hero > .container {
+  width: 100%;
+}
+
+code {
+  color: #000;
+  background-color: transparent;
+}
+
+.footer {
+  margin-top: 3rem;
+}
+
+.footer p {
+  text-wrap: balance;
+}
+
+/* Links read as links without relying on color alone, at AA contrast. */
+.footer a,
+.hero-body p a,
+.rollout-task a {
+  color: #1d5bbf;
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 768px) {
+  .hook {
+    font-size: 1.3rem;
+  }
+  .publication-title {
+    font-size: 1.75rem !important;
+  }
+}
+
+/* Phones: compact buttons, and the paper's wide figures at a legible fixed width that scrolls sideways. */
+@media screen and (max-width: 600px) {
+  .publication-links {
+    gap: 0.4rem;
+  }
+  .publication-links .button {
+    font-size: 0.85rem;
+    padding-left: 0.85em;
+    padding-right: 0.85em;
+  }
+  .scroll-x {
+    overflow-x: auto;
+  }
+  .scroll-hint {
+    display: block;
+  }
+  .scroll-x .wide-img,
+  .scroll-x .rollout-img {
+    width: 720px;
+    max-width: none;
+  }
+  h2.title.is-3 {
+    font-size: 1.5rem;
+  }
+  .results {
+    font-size: 0.85rem;
+  }
+  .results th,
+  .results td {
+    padding: 0.4rem 0.3rem;
+  }
+}
+
+/* Layout and finish: a wider page with prose kept at a readable measure, a light header band in the paper's green,
+   section kickers, headline numbers, and figures, tables, and rollouts on soft cards. */
+.container.is-max-desktop {
+  max-width: 1120px !important;
+}
+
+/* One content width for everything: text, headings, numbers, figures, the table, rollouts, and BibTeX. */
+.hero-body > p:not(.scroll-hint),
+.hero-body > h2,
+.hero-body > .kicker,
+.hero-body > .legend,
+.hero-body > .figure,
+.hero-body > .stats,
+.hero-body > .table-wrap,
+.hero-body > .rollout,
+.hero-body > pre,
+.abstract-text,
+#abstract h2,
+.bibtex-head {
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+header.hero {
+  background: linear-gradient(180deg, #f2f8e8 0%, #f9fcf4 60%, #ffffff 100%);
+  border-top: 4px solid #76b900;
+}
+
+header .hero-body {
+  padding-top: 3rem;
+}
+
+.kicker {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #3f6b00;
+  margin-bottom: 0.35rem !important;
+}
+
+header .kicker {
+  margin-bottom: 0.75rem !important;
+}
+
+.brand {
+  color: #76b900;
+}
+
+.hero-body {
+  padding-top: 3.25rem;
+}
+
+#abstract,
+#performance,
+#bibtex {
+  background: #f7f8f5;
+}
+
+#performance .hero-body,
+#bibtex .hero-body {
+  padding-bottom: 3rem;
+}
+
+.wide-img {
+  width: 100%;
+}
+
+.teaser-img {
+  width: 820px;
+}
+
+.figure > a,
+.figure > .scroll-x,
+.table-wrap,
+.rollout > .scroll-x {
+  display: block;
+  max-width: 100%;
+  background: #ffffff;
+  border: 1px solid #e6eadf;
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 6px 20px rgba(16, 24, 40, 0.06);
+  padding: 18px;
+}
+
+.table-wrap {
+  padding: 8px 18px;
+}
+
+.rollout > .scroll-x {
+  display: block;
+  padding: 12px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 1.75rem;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid #e3ead8;
+  border-radius: 14px;
+  padding: 14px 14px 16px;
+}
+
+.stat-pre {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b6b6b;
+}
+
+.stat-num {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #76b900;
+}
+
+.stat-label {
+  font-size: 0.88rem;
+  line-height: 1.35;
+  color: #4a4a4a;
+  margin-top: 0.2rem;
+}
+
+@media screen and (max-width: 768px) {
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .figure > a,
+  .figure > .scroll-x,
+  .rollout > .scroll-x {
+    padding: 8px;
+    border-radius: 10px;
+  }
+}
+
+/* The method name and key phrases. */
+.tv {
+  font-weight: 700;
+  color: #76b900;
+}
+
+strong {
+  color: #222222;
+  font-weight: 700;
+}
+
+strong .tv {
+  color: #76b900;
+}
